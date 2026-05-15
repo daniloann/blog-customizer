@@ -1,0 +1,2874 @@
+================================================================================
+СОДЕРЖИМОЕ ПРОЕКТА
+================================================================================
+
+
+================================================================================
+ПАПКА: src/
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\custom.d.ts
+────────────────────────────────────────────────────────────────────────────────
+
+declare module '*.svg' {
+	import React = require('react');
+	export const ReactComponent: React.FunctionComponent<
+		React.SVGProps<SVGSVGElement>
+	>;
+	const src: string;
+	export default src;
+}
+
+declare module '*.png';
+
+declare module '*.jpg';
+
+declare module '*.json';
+
+declare module '*.scss';
+
+declare module '*.module.css' {
+	const classes: { [key: string]: string };
+	export default classes;
+}
+
+declare module '*.module.scss' {
+	const classes: { [key: string]: string };
+	export default classes;
+}
+
+declare module '*.module.sass' {
+	const classes: { [key: string]: string };
+	export default classes;
+}
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\index.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+import { createRoot } from 'react-dom/client';
+
+import './styles/index.scss';
+import { StrictMode } from 'react';
+import { App } from './components/app/app';
+
+const domNode = document.getElementById('root') as HTMLDivElement;
+const root = createRoot(domNode);
+
+root.render(
+	<StrictMode>
+		<App />
+	</StrictMode>
+);
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\components\app\app.module.scss
+────────────────────────────────────────────────────────────────────────────────
+
+.main {
+	--bg-color: #ffffff;
+	background-color: var(--bg-color, #ffffff);
+}
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\components\app\app.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+import { CSSProperties } from 'react';
+import clsx from 'clsx';
+
+import { Article } from '../article/Article';
+import { ArticleParamsForm } from '../article-params-form/ArticleParamsForm';
+import { defaultArticleState } from './../../constants/articleProps';
+
+import styles from './app.module.scss';
+
+export const App = () => {
+	return (
+		<main
+			className={clsx(styles.main)}
+			style={
+				{
+					'--font-family': defaultArticleState.fontFamilyOption.value,
+					'--font-size': defaultArticleState.fontSizeOption.value,
+					'--font-color': defaultArticleState.fontColor.value,
+					'--container-width': defaultArticleState.contentWidth.value,
+					'--bg-color': defaultArticleState.backgroundColor.value,
+				} as CSSProperties
+			}>
+			<ArticleParamsForm />
+			<Article />
+		</main>
+	);
+};
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\components\article\Article.module.scss
+────────────────────────────────────────────────────────────────────────────────
+
+.article {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	row-gap: 24px;
+	max-width: var(--container-width, auto);
+	margin: 0 auto;
+	padding: 72px 0 144px;
+}
+
+.titleDescription {
+	max-width: 550px;
+}
+
+.image {
+	width: 100%;
+	height: auto;
+	margin-top: 26px;
+}
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\components\article\Article.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+import clsx from 'clsx';
+
+// Сообщаем вебпаку, что этот файл использует это изображение.
+import plane from 'src/images/plane.png';
+import { Text } from 'src/ui/text';
+
+import styles from './Article.module.scss';
+
+export const Article = () => {
+	return (
+		<article className={clsx(styles.article)}>
+			<Text as='h1' size={45} weight={800} uppercase dynamicLite>
+				Портрет Западной Швейцарии
+			</Text>
+			<div className={styles.titleDescription}>
+				<Text size={22} weight={800} uppercase align='center' dynamicLite>
+					Примитивист Фиштр расписывает новый бюджетный авиалайнер
+				</Text>
+			</div>
+			<img className={styles.image} src={plane} alt='Картинка самолета' />
+			<Text dynamic size={18} fontStyle='italic'>
+				Фото: Hans-Peter Gauster , &quot;Bombardier CSeries CS300 HB-JCA&quot; ©
+				2017 CC BY-SA 2.0
+			</Text>
+			<Text dynamic size={18}>
+				В конце 2016 года швейцарская авиакомпания Swiss получила свой первый
+				канадский «Бомбардье CS300» для полётов малой и средней дальности. Чтобы
+				придать новой 145-местной машине неповторимую индивидуальность, ливрею
+				заказали живописцу. При условии, что эскиз он выполнит в одиночку и
+				лично поправит роспись, когда её будут наносить на фюзеляж.
+			</Text>
+			<Text dynamic size={18}>
+				Выбор пал на примитивиста Матиаса Форбаша, работающего под псевдонимом
+				Фиштр. Ему поставили задачу изобразить всё лучшее во франкоговорящей
+				части Швейцарии — горы, озёра, вина, сыры, доброжелательность и свободу.
+				Заказ был выполнен в рекордный срок, всего за 5 месяцев. Самолёт
+				получился похожим на самого художника: такой же добродушный и с улыбкой
+				до ушей.
+			</Text>
+			<Text dynamic size={18}>
+				С мая 2017 года &quot;Бомбардье&quot; носит имя &quot;Швейцарская
+				Романдия&quot; и регистрационный номер HB-JCA ; совершает в среднем 4
+				коммерческих полёта в сутки. Его можно видеть в &quot;Домодедово&quot;,
+				а также в аэропортах Парижа, Валенсии, Кракова, Берлина, Вены, Загреба,
+				на на Майорке, Крите и Сицилии. Самолёт останется в той же ливрее, пока
+				его купит другая авиакомпания.
+			</Text>
+		</article>
+	);
+};
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\components\article\index.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+export { Article } from './Article';
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\components\article-params-form\ArticleParamsForm.module.scss
+────────────────────────────────────────────────────────────────────────────────
+
+.container {
+	position: fixed;
+	left: 0;
+	width: 616px;
+	height: 100%;
+	overflow: scroll;
+	transform: translate(-616px);
+	transition: transform 0.5s ease;
+}
+
+.container_open {
+	transform: translate(0);
+}
+
+.form {
+	display: flex;
+	flex-shrink: 0;
+	flex-direction: column;
+	box-sizing: border-box;
+	width: 616px;
+	height: auto;
+	min-height: 100%;
+	padding: 50px 31px;
+	background-color: #ffffff;
+	border-right: 1px solid #000000;
+}
+
+.bottomContainer {
+	display: flex;
+	justify-content: space-between;
+	margin-top: auto;
+}
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\components\article-params-form\ArticleParamsForm.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+import { ArrowButton } from 'src/ui/arrow-button';
+import { Button } from 'src/ui/button';
+
+import styles from './ArticleParamsForm.module.scss';
+
+export const ArticleParamsForm = () => {
+	return (
+		<>
+			<ArrowButton isOpen={false} onClick={() => {}} />
+			<aside className={styles.container}>
+				<form className={styles.form}>
+					<div className={styles.bottomContainer}>
+						<Button title='Сбросить' htmlType='reset' type='clear' />
+						<Button title='Применить' htmlType='submit' type='apply' />
+					</div>
+				</form>
+			</aside>
+		</>
+	);
+};
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\components\article-params-form\index.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+export { ArticleParamsForm } from './ArticleParamsForm';
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\constants\articleProps.ts
+────────────────────────────────────────────────────────────────────────────────
+
+export const fontFamilyClasses = [
+	'open-sans',
+	'ubuntu',
+	'cormorant-garamond',
+	'days-one',
+	'merriweather',
+] as const;
+
+export type FontFamiliesClasses = (typeof fontFamilyClasses)[number];
+
+export type OptionType = {
+	title: string;
+	value: string;
+	className: string;
+	optionClassName?: string;
+};
+
+export const fontFamilyOptions: OptionType[] & {
+	optionClassName?: FontFamiliesClasses;
+} = [
+	{ title: 'Open Sans', value: 'Open Sans', className: fontFamilyClasses[0] },
+	{ title: 'Ubuntu', value: 'Ubuntu', className: fontFamilyClasses[1] },
+	{
+		title: 'Cormorant Garamond',
+		value: 'Cormorant Garamond',
+		className: fontFamilyClasses[2],
+	},
+	{ title: 'Days One', value: 'Days One', className: fontFamilyClasses[3] },
+	{
+		title: 'Merriweather',
+		value: 'Merriweather',
+		className: fontFamilyClasses[4],
+	},
+];
+
+export const fontColors: OptionType[] = [
+	{
+		title: 'Черный',
+		value: '#000000',
+		className: 'font-black',
+		optionClassName: 'option-black',
+	},
+	{
+		title: 'Белый',
+		value: '#FFFFFF',
+		className: 'font-white',
+		optionClassName: 'option-white',
+	},
+	{
+		title: 'Серый',
+		value: '#C4C4C4',
+		className: 'font-gray',
+		optionClassName: 'option-gray',
+	},
+	{
+		title: 'Розовый',
+		value: '#FEAFE8',
+		className: 'font-pink',
+		optionClassName: 'option-pink',
+	},
+	{
+		title: 'Ярко-розовый',
+		value: '#FD24AF',
+		className: 'font-fuchsia',
+		optionClassName: 'option-fuchsia',
+	},
+	{
+		title: 'Жёлтый',
+		value: '#FFC802',
+		className: 'font-yellow',
+		optionClassName: 'option-yellow',
+	},
+	{
+		title: 'Зелёный',
+		value: '#80D994',
+		className: 'font-green',
+		optionClassName: 'option-green',
+	},
+	{
+		title: 'Голубой',
+		value: '#6FC1FD',
+		className: 'font-blue',
+		optionClassName: 'option-blue',
+	},
+	{
+		title: 'Фиолетовый',
+		value: '#5F0DEE',
+		className: 'font-purple',
+		optionClassName: 'option-purple',
+	},
+];
+
+export const backgroundColors: OptionType[] = [
+	{
+		title: 'Белый',
+		value: '#FFFFFF',
+		className: 'bg-white',
+		optionClassName: 'option-white',
+	},
+	{
+		title: 'Черный',
+		value: '#000000',
+		className: 'bg-black',
+		optionClassName: 'option-black',
+	},
+	{
+		title: 'Серый',
+		value: '#C4C4C4',
+		className: 'bg-gray',
+		optionClassName: 'option-gray',
+	},
+	{
+		title: 'Розовый',
+		value: '#FEAFE8',
+		className: 'bg-pink',
+		optionClassName: 'option-pink',
+	},
+	{
+		title: 'Ярко-розовый',
+		value: '#FD24AF',
+		className: 'bg-fuchsia',
+		optionClassName: 'option-fuchsia',
+	},
+	{
+		title: 'Жёлтый',
+		value: '#FFC802',
+		className: 'bg-yellow',
+		optionClassName: 'option-yellow',
+	},
+	{
+		title: 'Зелёный',
+		value: '#80D994',
+		className: 'bg-green',
+		optionClassName: 'option-green',
+	},
+	{
+		title: 'Голубой',
+		value: '#6FC1FD',
+		className: 'bg-blue',
+		optionClassName: 'option-blue',
+	},
+	{
+		title: 'Фиолетовый',
+		value: '#5F0DEE',
+		className: 'bg-purple',
+		optionClassName: 'option-purple',
+	},
+];
+
+export const contentWidthArr: OptionType[] = [
+	{
+		title: 'Широкий',
+		value: '1394px',
+		className: 'width-wide',
+		optionClassName: 'option-wide',
+	},
+	{
+		title: 'Узкий',
+		value: '948px',
+		className: 'width-narrow',
+		optionClassName: 'option-narrow',
+	},
+];
+
+export const fontSizeOptions: OptionType[] = [
+	{ title: '18px', value: '18px', className: 'font-size-18' },
+	{ title: '25px', value: '25px', className: 'font-size-25' },
+	{ title: '38px', value: '38px', className: 'font-size-38' },
+];
+
+export const defaultArticleState = {
+	fontFamilyOption: fontFamilyOptions[0],
+	fontColor: fontColors[0],
+	backgroundColor: backgroundColors[0],
+	contentWidth: contentWidthArr[0],
+	fontSizeOption: fontSizeOptions[0],
+};
+
+export type ArticleStateType = typeof defaultArticleState;
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\fonts\font.scss
+────────────────────────────────────────────────────────────────────────────────
+
+@font-face {
+	font-family: 'Open sans';
+	src: url('~fonts/font-files/Open_Sans/OpenSans-VariableFont_wdth\,wght.ttf')
+		format('truetype');
+	font-weight: 400 800;
+}
+
+@font-face {
+	font-family: 'Open sans';
+	src: url('~fonts/font-files/Open_Sans/OpenSans-Italic-VariableFont_wdth\,wght.ttf')
+		format('truetype');
+	font-weight: 400;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'Cormorant Garamond';
+	src: url('~fonts/font-files/Cormorant_Garamond/CormorantGaramond-Regular.ttf')
+		format('truetype');
+	font-weight: 400;
+}
+
+@font-face {
+	font-family: 'Cormorant Garamond';
+	src: url('~fonts/font-files/Cormorant_Garamond/CormorantGaramond-Bold.ttf')
+		format('truetype');
+	font-weight: 800;
+}
+
+@font-face {
+	font-family: 'Days One';
+	src: url('~fonts/font-files/Days_One/DaysOne-Regular.ttf') format('truetype');
+	font-weight: 400 800;
+}
+
+@font-face {
+	font-family: 'Merriweather';
+	src: url('~fonts/font-files/Merriweather/Merriweather-Regular.ttf')
+		format('truetype');
+	font-weight: 400;
+}
+
+@font-face {
+	font-family: 'Merriweather';
+	src: url('~fonts/font-files/Merriweather/Merriweather-Bold.ttf')
+		format('truetype');
+	font-weight: 800;
+}
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\fonts\font-files\Cormorant_Garamond\OFL.txt
+────────────────────────────────────────────────────────────────────────────────
+
+Copyright 2015 the Cormorant Project Authors (github.com/CatharsisFonts/Cormorant)
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at:
+http://scripts.sil.org/OFL
+
+
+-----------------------------------------------------------
+SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+-----------------------------------------------------------
+
+PREAMBLE
+The goals of the Open Font License (OFL) are to stimulate worldwide
+development of collaborative font projects, to support the font creation
+efforts of academic and linguistic communities, and to provide a free and
+open framework in which fonts may be shared and improved in partnership
+with others.
+
+The OFL allows the licensed fonts to be used, studied, modified and
+redistributed freely as long as they are not sold by themselves. The
+fonts, including any derivative works, can be bundled, embedded, 
+redistributed and/or sold with any software provided that any reserved
+names are not used by derivative works. The fonts and derivatives,
+however, cannot be released under any other type of license. The
+requirement for fonts to remain under this license does not apply
+to any document created using the fonts or their derivatives.
+
+DEFINITIONS
+"Font Software" refers to the set of files released by the Copyright
+Holder(s) under this license and clearly marked as such. This may
+include source files, build scripts and documentation.
+
+"Reserved Font Name" refers to any names specified as such after the
+copyright statement(s).
+
+"Original Version" refers to the collection of Font Software components as
+distributed by the Copyright Holder(s).
+
+"Modified Version" refers to any derivative made by adding to, deleting,
+or substituting -- in part or in whole -- any of the components of the
+Original Version, by changing formats or by porting the Font Software to a
+new environment.
+
+"Author" refers to any designer, engineer, programmer, technical
+writer or other person who contributed to the Font Software.
+
+PERMISSION & CONDITIONS
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of the Font Software, to use, study, copy, merge, embed, modify,
+redistribute, and sell modified and unmodified copies of the Font
+Software, subject to the following conditions:
+
+1) Neither the Font Software nor any of its individual components,
+in Original or Modified Versions, may be sold by itself.
+
+2) Original or Modified Versions of the Font Software may be bundled,
+redistributed and/or sold with any software, provided that each copy
+contains the above copyright notice and this license. These can be
+included either as stand-alone text files, human-readable headers or
+in the appropriate machine-readable metadata fields within text or
+binary files as long as those fields can be easily viewed by the user.
+
+3) No Modified Version of the Font Software may use the Reserved Font
+Name(s) unless explicit written permission is granted by the corresponding
+Copyright Holder. This restriction only applies to the primary font name as
+presented to the users.
+
+4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font
+Software shall not be used to promote, endorse or advertise any
+Modified Version, except to acknowledge the contribution(s) of the
+Copyright Holder(s) and the Author(s) or with their explicit written
+permission.
+
+5) The Font Software, modified or unmodified, in part or in whole,
+must be distributed entirely under this license, and must not be
+distributed under any other license. The requirement for fonts to
+remain under this license does not apply to any document created
+using the Font Software.
+
+TERMINATION
+This license becomes null and void if any of the above conditions are
+not met.
+
+DISCLAIMER
+THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
+OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
+DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
+OTHER DEALINGS IN THE FONT SOFTWARE.
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\fonts\font-files\Days_One\OFL.txt
+────────────────────────────────────────────────────────────────────────────────
+
+Copyright (c) 2011, Jovanny Lemonad (http://www.jovanny.ru)
+with Reserved Font Name "Days One"
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at:
+http://scripts.sil.org/OFL
+
+
+-----------------------------------------------------------
+SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+-----------------------------------------------------------
+
+PREAMBLE
+The goals of the Open Font License (OFL) are to stimulate worldwide
+development of collaborative font projects, to support the font creation
+efforts of academic and linguistic communities, and to provide a free and
+open framework in which fonts may be shared and improved in partnership
+with others.
+
+The OFL allows the licensed fonts to be used, studied, modified and
+redistributed freely as long as they are not sold by themselves. The
+fonts, including any derivative works, can be bundled, embedded, 
+redistributed and/or sold with any software provided that any reserved
+names are not used by derivative works. The fonts and derivatives,
+however, cannot be released under any other type of license. The
+requirement for fonts to remain under this license does not apply
+to any document created using the fonts or their derivatives.
+
+DEFINITIONS
+"Font Software" refers to the set of files released by the Copyright
+Holder(s) under this license and clearly marked as such. This may
+include source files, build scripts and documentation.
+
+"Reserved Font Name" refers to any names specified as such after the
+copyright statement(s).
+
+"Original Version" refers to the collection of Font Software components as
+distributed by the Copyright Holder(s).
+
+"Modified Version" refers to any derivative made by adding to, deleting,
+or substituting -- in part or in whole -- any of the components of the
+Original Version, by changing formats or by porting the Font Software to a
+new environment.
+
+"Author" refers to any designer, engineer, programmer, technical
+writer or other person who contributed to the Font Software.
+
+PERMISSION & CONDITIONS
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of the Font Software, to use, study, copy, merge, embed, modify,
+redistribute, and sell modified and unmodified copies of the Font
+Software, subject to the following conditions:
+
+1) Neither the Font Software nor any of its individual components,
+in Original or Modified Versions, may be sold by itself.
+
+2) Original or Modified Versions of the Font Software may be bundled,
+redistributed and/or sold with any software, provided that each copy
+contains the above copyright notice and this license. These can be
+included either as stand-alone text files, human-readable headers or
+in the appropriate machine-readable metadata fields within text or
+binary files as long as those fields can be easily viewed by the user.
+
+3) No Modified Version of the Font Software may use the Reserved Font
+Name(s) unless explicit written permission is granted by the corresponding
+Copyright Holder. This restriction only applies to the primary font name as
+presented to the users.
+
+4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font
+Software shall not be used to promote, endorse or advertise any
+Modified Version, except to acknowledge the contribution(s) of the
+Copyright Holder(s) and the Author(s) or with their explicit written
+permission.
+
+5) The Font Software, modified or unmodified, in part or in whole,
+must be distributed entirely under this license, and must not be
+distributed under any other license. The requirement for fonts to
+remain under this license does not apply to any document created
+using the Font Software.
+
+TERMINATION
+This license becomes null and void if any of the above conditions are
+not met.
+
+DISCLAIMER
+THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
+OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
+DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
+OTHER DEALINGS IN THE FONT SOFTWARE.
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\fonts\font-files\Merriweather\OFL.txt
+────────────────────────────────────────────────────────────────────────────────
+
+Copyright 2016 The Merriweather Project Authors (https://github.com/EbenSorkin/Merriweather), with Reserved Font Name "Merriweather".
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at:
+http://scripts.sil.org/OFL
+
+
+-----------------------------------------------------------
+SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+-----------------------------------------------------------
+
+PREAMBLE
+The goals of the Open Font License (OFL) are to stimulate worldwide
+development of collaborative font projects, to support the font creation
+efforts of academic and linguistic communities, and to provide a free and
+open framework in which fonts may be shared and improved in partnership
+with others.
+
+The OFL allows the licensed fonts to be used, studied, modified and
+redistributed freely as long as they are not sold by themselves. The
+fonts, including any derivative works, can be bundled, embedded, 
+redistributed and/or sold with any software provided that any reserved
+names are not used by derivative works. The fonts and derivatives,
+however, cannot be released under any other type of license. The
+requirement for fonts to remain under this license does not apply
+to any document created using the fonts or their derivatives.
+
+DEFINITIONS
+"Font Software" refers to the set of files released by the Copyright
+Holder(s) under this license and clearly marked as such. This may
+include source files, build scripts and documentation.
+
+"Reserved Font Name" refers to any names specified as such after the
+copyright statement(s).
+
+"Original Version" refers to the collection of Font Software components as
+distributed by the Copyright Holder(s).
+
+"Modified Version" refers to any derivative made by adding to, deleting,
+or substituting -- in part or in whole -- any of the components of the
+Original Version, by changing formats or by porting the Font Software to a
+new environment.
+
+"Author" refers to any designer, engineer, programmer, technical
+writer or other person who contributed to the Font Software.
+
+PERMISSION & CONDITIONS
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of the Font Software, to use, study, copy, merge, embed, modify,
+redistribute, and sell modified and unmodified copies of the Font
+Software, subject to the following conditions:
+
+1) Neither the Font Software nor any of its individual components,
+in Original or Modified Versions, may be sold by itself.
+
+2) Original or Modified Versions of the Font Software may be bundled,
+redistributed and/or sold with any software, provided that each copy
+contains the above copyright notice and this license. These can be
+included either as stand-alone text files, human-readable headers or
+in the appropriate machine-readable metadata fields within text or
+binary files as long as those fields can be easily viewed by the user.
+
+3) No Modified Version of the Font Software may use the Reserved Font
+Name(s) unless explicit written permission is granted by the corresponding
+Copyright Holder. This restriction only applies to the primary font name as
+presented to the users.
+
+4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font
+Software shall not be used to promote, endorse or advertise any
+Modified Version, except to acknowledge the contribution(s) of the
+Copyright Holder(s) and the Author(s) or with their explicit written
+permission.
+
+5) The Font Software, modified or unmodified, in part or in whole,
+must be distributed entirely under this license, and must not be
+distributed under any other license. The requirement for fonts to
+remain under this license does not apply to any document created
+using the Font Software.
+
+TERMINATION
+This license becomes null and void if any of the above conditions are
+not met.
+
+DISCLAIMER
+THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
+OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
+DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
+OTHER DEALINGS IN THE FONT SOFTWARE.
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\fonts\font-files\Open_Sans\OFL.txt
+────────────────────────────────────────────────────────────────────────────────
+
+Copyright 2020 The Open Sans Project Authors (https://github.com/googlefonts/opensans)
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at:
+http://scripts.sil.org/OFL
+
+
+-----------------------------------------------------------
+SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+-----------------------------------------------------------
+
+PREAMBLE
+The goals of the Open Font License (OFL) are to stimulate worldwide
+development of collaborative font projects, to support the font creation
+efforts of academic and linguistic communities, and to provide a free and
+open framework in which fonts may be shared and improved in partnership
+with others.
+
+The OFL allows the licensed fonts to be used, studied, modified and
+redistributed freely as long as they are not sold by themselves. The
+fonts, including any derivative works, can be bundled, embedded, 
+redistributed and/or sold with any software provided that any reserved
+names are not used by derivative works. The fonts and derivatives,
+however, cannot be released under any other type of license. The
+requirement for fonts to remain under this license does not apply
+to any document created using the fonts or their derivatives.
+
+DEFINITIONS
+"Font Software" refers to the set of files released by the Copyright
+Holder(s) under this license and clearly marked as such. This may
+include source files, build scripts and documentation.
+
+"Reserved Font Name" refers to any names specified as such after the
+copyright statement(s).
+
+"Original Version" refers to the collection of Font Software components as
+distributed by the Copyright Holder(s).
+
+"Modified Version" refers to any derivative made by adding to, deleting,
+or substituting -- in part or in whole -- any of the components of the
+Original Version, by changing formats or by porting the Font Software to a
+new environment.
+
+"Author" refers to any designer, engineer, programmer, technical
+writer or other person who contributed to the Font Software.
+
+PERMISSION & CONDITIONS
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of the Font Software, to use, study, copy, merge, embed, modify,
+redistribute, and sell modified and unmodified copies of the Font
+Software, subject to the following conditions:
+
+1) Neither the Font Software nor any of its individual components,
+in Original or Modified Versions, may be sold by itself.
+
+2) Original or Modified Versions of the Font Software may be bundled,
+redistributed and/or sold with any software, provided that each copy
+contains the above copyright notice and this license. These can be
+included either as stand-alone text files, human-readable headers or
+in the appropriate machine-readable metadata fields within text or
+binary files as long as those fields can be easily viewed by the user.
+
+3) No Modified Version of the Font Software may use the Reserved Font
+Name(s) unless explicit written permission is granted by the corresponding
+Copyright Holder. This restriction only applies to the primary font name as
+presented to the users.
+
+4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font
+Software shall not be used to promote, endorse or advertise any
+Modified Version, except to acknowledge the contribution(s) of the
+Copyright Holder(s) and the Author(s) or with their explicit written
+permission.
+
+5) The Font Software, modified or unmodified, in part or in whole,
+must be distributed entirely under this license, and must not be
+distributed under any other license. The requirement for fonts to
+remain under this license does not apply to any document created
+using the Font Software.
+
+TERMINATION
+This license becomes null and void if any of the above conditions are
+not met.
+
+DISCLAIMER
+THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
+OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
+DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
+OTHER DEALINGS IN THE FONT SOFTWARE.
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\fonts\font-files\Open_Sans\README.txt
+────────────────────────────────────────────────────────────────────────────────
+
+Open Sans Variable Font
+=======================
+
+This download contains Open Sans as both variable fonts and static fonts.
+
+Open Sans is a variable font with these axes:
+  wdth
+  wght
+
+This means all the styles are contained in these files:
+  Open_Sans/OpenSans-VariableFont_wdth,wght.ttf
+  Open_Sans/OpenSans-Italic-VariableFont_wdth,wght.ttf
+
+If your app fully supports variable fonts, you can now pick intermediate styles
+that aren’t available as static fonts. Not all apps support variable fonts, and
+in those cases you can use the static font files for Open Sans:
+  Open_Sans/static/OpenSans_Condensed-Light.ttf
+  Open_Sans/static/OpenSans_Condensed-Regular.ttf
+  Open_Sans/static/OpenSans_Condensed-Medium.ttf
+  Open_Sans/static/OpenSans_Condensed-SemiBold.ttf
+  Open_Sans/static/OpenSans_Condensed-Bold.ttf
+  Open_Sans/static/OpenSans_Condensed-ExtraBold.ttf
+  Open_Sans/static/OpenSans_SemiCondensed-Light.ttf
+  Open_Sans/static/OpenSans_SemiCondensed-Regular.ttf
+  Open_Sans/static/OpenSans_SemiCondensed-Medium.ttf
+  Open_Sans/static/OpenSans_SemiCondensed-SemiBold.ttf
+  Open_Sans/static/OpenSans_SemiCondensed-Bold.ttf
+  Open_Sans/static/OpenSans_SemiCondensed-ExtraBold.ttf
+  Open_Sans/static/OpenSans-Light.ttf
+  Open_Sans/static/OpenSans-Regular.ttf
+  Open_Sans/static/OpenSans-Medium.ttf
+  Open_Sans/static/OpenSans-SemiBold.ttf
+  Open_Sans/static/OpenSans-Bold.ttf
+  Open_Sans/static/OpenSans-ExtraBold.ttf
+  Open_Sans/static/OpenSans_Condensed-LightItalic.ttf
+  Open_Sans/static/OpenSans_Condensed-Italic.ttf
+  Open_Sans/static/OpenSans_Condensed-MediumItalic.ttf
+  Open_Sans/static/OpenSans_Condensed-SemiBoldItalic.ttf
+  Open_Sans/static/OpenSans_Condensed-BoldItalic.ttf
+  Open_Sans/static/OpenSans_Condensed-ExtraBoldItalic.ttf
+  Open_Sans/static/OpenSans_SemiCondensed-LightItalic.ttf
+  Open_Sans/static/OpenSans_SemiCondensed-Italic.ttf
+  Open_Sans/static/OpenSans_SemiCondensed-MediumItalic.ttf
+  Open_Sans/static/OpenSans_SemiCondensed-SemiBoldItalic.ttf
+  Open_Sans/static/OpenSans_SemiCondensed-BoldItalic.ttf
+  Open_Sans/static/OpenSans_SemiCondensed-ExtraBoldItalic.ttf
+  Open_Sans/static/OpenSans-LightItalic.ttf
+  Open_Sans/static/OpenSans-Italic.ttf
+  Open_Sans/static/OpenSans-MediumItalic.ttf
+  Open_Sans/static/OpenSans-SemiBoldItalic.ttf
+  Open_Sans/static/OpenSans-BoldItalic.ttf
+  Open_Sans/static/OpenSans-ExtraBoldItalic.ttf
+
+Get started
+-----------
+
+1. Install the font files you want to use
+
+2. Use your app's font picker to view the font family and all the
+available styles
+
+Learn more about variable fonts
+-------------------------------
+
+  https://developers.google.com/web/fundamentals/design-and-ux/typography/variable-fonts
+  https://variablefonts.typenetwork.com
+  https://medium.com/variable-fonts
+
+In desktop apps
+
+  https://theblog.adobe.com/can-variable-fonts-illustrator-cc
+  https://helpx.adobe.com/nz/photoshop/using/fonts.html#variable_fonts
+
+Online
+
+  https://developers.google.com/fonts/docs/getting_started
+  https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Fonts/Variable_Fonts_Guide
+  https://developer.microsoft.com/en-us/microsoft-edge/testdrive/demos/variable-fonts
+
+Installing fonts
+
+  MacOS: https://support.apple.com/en-us/HT201749
+  Linux: https://www.google.com/search?q=how+to+install+a+font+on+gnu%2Blinux
+  Windows: https://support.microsoft.com/en-us/help/314960/how-to-install-or-remove-a-font-in-windows
+
+Android Apps
+
+  https://developers.google.com/fonts/docs/android
+  https://developer.android.com/guide/topics/ui/look-and-feel/downloadable-fonts
+
+License
+-------
+Please read the full license text (OFL.txt) to understand the permissions,
+restrictions and requirements for usage, redistribution, and modification.
+
+You can use them in your products & projects – print or digital,
+commercial or otherwise.
+
+This isn't legal advice, please consider consulting a lawyer and see the full
+license for all details.
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\fonts\font-files\Ubuntu\UFL.txt
+────────────────────────────────────────────────────────────────────────────────
+
+-------------------------------
+UBUNTU FONT LICENCE Version 1.0
+-------------------------------
+
+PREAMBLE
+This licence allows the licensed fonts to be used, studied, modified and
+redistributed freely. The fonts, including any derivative works, can be
+bundled, embedded, and redistributed provided the terms of this licence
+are met. The fonts and derivatives, however, cannot be released under
+any other licence. The requirement for fonts to remain under this
+licence does not require any document created using the fonts or their
+derivatives to be published under this licence, as long as the primary
+purpose of the document is not to be a vehicle for the distribution of
+the fonts.
+
+DEFINITIONS
+"Font Software" refers to the set of files released by the Copyright
+Holder(s) under this licence and clearly marked as such. This may
+include source files, build scripts and documentation.
+
+"Original Version" refers to the collection of Font Software components
+as received under this licence.
+
+"Modified Version" refers to any derivative made by adding to, deleting,
+or substituting -- in part or in whole -- any of the components of the
+Original Version, by changing formats or by porting the Font Software to
+a new environment.
+
+"Copyright Holder(s)" refers to all individuals and companies who have a
+copyright ownership of the Font Software.
+
+"Substantially Changed" refers to Modified Versions which can be easily
+identified as dissimilar to the Font Software by users of the Font
+Software comparing the Original Version with the Modified Version.
+
+To "Propagate" a work means to do anything with it that, without
+permission, would make you directly or secondarily liable for
+infringement under applicable copyright law, except executing it on a
+computer or modifying a private copy. Propagation includes copying,
+distribution (with or without modification and with or without charging
+a redistribution fee), making available to the public, and in some
+countries other activities as well.
+
+PERMISSION & CONDITIONS
+This licence does not grant any rights under trademark law and all such
+rights are reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of the Font Software, to propagate the Font Software, subject to
+the below conditions:
+
+1) Each copy of the Font Software must contain the above copyright
+notice and this licence. These can be included either as stand-alone
+text files, human-readable headers or in the appropriate machine-
+readable metadata fields within text or binary files as long as those
+fields can be easily viewed by the user.
+
+2) The font name complies with the following:
+(a) The Original Version must retain its name, unmodified.
+(b) Modified Versions which are Substantially Changed must be renamed to
+avoid use of the name of the Original Version or similar names entirely.
+(c) Modified Versions which are not Substantially Changed must be
+renamed to both (i) retain the name of the Original Version and (ii) add
+additional naming elements to distinguish the Modified Version from the
+Original Version. The name of such Modified Versions must be the name of
+the Original Version, with "derivative X" where X represents the name of
+the new work, appended to that name.
+
+3) The name(s) of the Copyright Holder(s) and any contributor to the
+Font Software shall not be used to promote, endorse or advertise any
+Modified Version, except (i) as required by this licence, (ii) to
+acknowledge the contribution(s) of the Copyright Holder(s) or (iii) with
+their explicit written permission.
+
+4) The Font Software, modified or unmodified, in part or in whole, must
+be distributed entirely under this licence, and must not be distributed
+under any other licence. The requirement for fonts to remain under this
+licence does not affect any document created using the Font Software,
+except any version of the Font Software extracted from a document
+created using the Font Software may only be distributed under this
+licence.
+
+TERMINATION
+This licence becomes null and void if any of the above conditions are
+not met.
+
+DISCLAIMER
+THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF
+COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
+DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM OTHER
+DEALINGS IN THE FONT SOFTWARE.
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\styles\index.scss
+────────────────────────────────────────────────────────────────────────────────
+
+/* Подключаем стили со шрифтами, так как они нужны на всех страницах */
+
+@import '~fonts/font';
+
+/* Отключаем браузерные дефолтные стили для всех элементов */
+
+html,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+	margin: 0;
+	padding: 0;
+	font: inherit;
+	font-size: 100%;
+	vertical-align: baseline;
+	border: 0;
+}
+
+/* HTML5 display-role reset for older browsers */
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+	display: block;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font: inherit;
+	font-size: 100%;
+	line-height: 1;
+	vertical-align: baseline;
+	border: 0;
+}
+
+ol,
+ul {
+	list-style: none;
+}
+
+blockquote,
+q {
+	quotes: none;
+}
+
+blockquote::before,
+blockquote::after,
+q::before,
+q::after {
+	content: '';
+	content: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\arrow-button\ArrowButton.module.scss
+────────────────────────────────────────────────────────────────────────────────
+
+.container {
+	position: fixed;
+	top: 31px;
+	display: flex;
+	flex-shrink: 0;
+	justify-content: center;
+	align-items: center;
+	box-sizing: border-box;
+	width: 100px;
+	height: 100px;
+	background-color: #000000;
+	border-right: 1px;
+	transition: transform 0.5s ease;
+}
+
+.container:hover {
+	background-color: #ffc802;
+}
+
+.container:active {
+	background-color: #787878;
+}
+
+.container_open {
+	transform: translate(616px);
+}
+
+.arrow {
+	flex-shrink: 0;
+	width: 48px;
+	height: 48px;
+	transform: rotate(180deg);
+	transition: transform 0.5s ease;
+}
+
+.arrow_open {
+	transform: rotate(0deg);
+}
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\arrow-button\ArrowButton.stories.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+import type { Meta, StoryObj } from '@storybook/react';
+
+import { ArrowButton } from './ArrowButton';
+import { createElement, useState } from 'react';
+
+const meta: Meta<typeof ArrowButton> = {
+	component: ArrowButton,
+};
+
+export default meta;
+type Story = StoryObj<typeof ArrowButton>;
+
+export const ArrowButtonStory: Story = {
+	render: () =>
+		createElement(() => {
+			const [isOpen, setIsOpen] = useState(false);
+
+			return <ArrowButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />;
+		}),
+};
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\arrow-button\ArrowButton.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+import arrow from 'src/images/arrow.svg';
+
+import styles from './ArrowButton.module.scss';
+import clsx from 'clsx';
+
+/** Функция для обработки открытия/закрытия формы */
+export type OnClick = () => void;
+
+type ArrowButtonProps = {
+	isOpen: boolean;
+	onClick: OnClick;
+};
+
+export const ArrowButton = ({ isOpen, onClick }: ArrowButtonProps) => {
+	return (
+		/* Не забываем указаывать role и aria-label атрибуты для интерактивных элементов */
+		<div
+			role='button'
+			aria-label='Открыть/Закрыть форму параметров статьи'
+			tabIndex={0}
+			className={clsx(styles.container, { [styles.container_open]: isOpen })}
+			onClick={onClick}>
+			<img
+				src={arrow}
+				alt='иконка стрелочки'
+				className={clsx(styles.arrow, { [styles.arrow_open]: isOpen })}
+			/>
+		</div>
+	);
+};
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\arrow-button\index.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+export { ArrowButton } from './ArrowButton';
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\button\Button.module.scss
+────────────────────────────────────────────────────────────────────────────────
+
+.button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	box-sizing: border-box;
+	width: 210px;
+	height: 50px;
+	text-align: center;
+	border: 1px solid #000000;
+	cursor: pointer;
+}
+
+.button_apply {
+	background-color: #ffc802;
+}
+
+.button_clear {
+	background-color: white;
+}
+
+.button_apply:hover {
+	background-color: #ffedab;
+}
+
+.button_clear:hover {
+	background-color: #000000;
+}
+
+.button_clear:hover div {
+	color: white;
+}
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\button\Button.stories.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+import type { Meta, StoryObj } from '@storybook/react';
+
+import { Button } from './Button';
+
+const meta: Meta<typeof Button> = {
+	component: Button,
+};
+
+export default meta;
+type Story = StoryObj<typeof Button>;
+
+export const ButtonStory: Story = {
+	render: () => {
+		return (
+			<div style={{ display: 'flex', gap: '10px' }}>
+				<Button
+					title='Применить'
+					htmlType='submit'
+					type='apply'
+					onClick={() => alert('клик на кнопку применить')}
+				/>
+				<Button
+					title='Сбросить'
+					htmlType='reset'
+					type='clear'
+					onClick={() => alert('клик на кнопку сбросить')}
+				/>
+			</div>
+		);
+	},
+};
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\button\Button.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+import { Text } from 'src/ui/text';
+
+import styles from './Button.module.scss';
+import { clsx } from 'clsx';
+
+export const Button = ({
+	title,
+	onClick,
+	htmlType,
+	type,
+}: {
+	title: string;
+	onClick?: () => void;
+	htmlType?: React.ButtonHTMLAttributes<HTMLButtonElement>['type'];
+	type: 'apply' | 'clear';
+}) => {
+	return (
+		<button
+			className={clsx(
+				styles.button,
+				{ [styles.button_apply]: type === 'apply' },
+				{ [styles.button_clear]: type === 'clear' }
+			)}
+			type={htmlType}
+			onClick={onClick}>
+			<Text weight={800} uppercase>
+				{title}
+			</Text>
+		</button>
+	);
+};
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\button\index.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+export { Button } from './Button';
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\radio-group\index.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+export { RadioGroup } from './RadioGroup';
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\radio-group\Option.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+import { useRef } from 'react';
+import { OptionType } from 'src/constants/articleProps';
+import { Text } from 'src/ui/text';
+import { useEnterSubmit } from './hooks/useEnterSubmit';
+
+import styles from './RadioGroup.module.scss';
+
+type OptionProps = {
+	value: OptionType['value'];
+	title: OptionType['title'];
+	selected: OptionType;
+	groupName: string;
+	onChange?: (option: OptionType) => void;
+	option: OptionType;
+};
+
+export const Option = (props: OptionProps) => {
+	const { value, title, selected, groupName, onChange, option } = props;
+
+	const optionRef = useRef<HTMLDivElement>(null);
+
+	const handleChange = () => onChange?.(option);
+
+	useEnterSubmit({ onChange, option });
+
+	const inputId = `${groupName}_radio_item_with_value__${value}`;
+	const isChecked = value === selected.title;
+
+	return (
+		<div
+			className={styles.item}
+			key={value}
+			data-checked={isChecked}
+			data-testid={inputId}
+			tabIndex={0}
+			ref={optionRef}>
+			<input
+				className={styles.input}
+				type='radio'
+				name={groupName}
+				id={inputId}
+				value={value}
+				onChange={handleChange}
+				tabIndex={-1}
+			/>
+			<label className={styles.label} htmlFor={inputId}>
+				<Text size={18} uppercase>
+					{title}
+				</Text>
+			</label>
+		</div>
+	);
+};
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\radio-group\RadioGroup.module.scss
+────────────────────────────────────────────────────────────────────────────────
+
+.group {
+	display: inline-flex;
+	box-sizing: border-box;
+	max-width: fit-content;
+	border: 1px solid #000000;
+}
+
+.item {
+	position: relative;
+	display: block;
+}
+
+.input {
+	position: absolute;
+	width: 0;
+	height: 0;
+	margin: 0;
+	padding: 0;
+	opacity: 0;
+}
+
+.label {
+	display: flex;
+	flex-shrink: 0;
+	justify-content: center;
+	align-items: center;
+	box-sizing: border-box;
+	width: 124px;
+	height: 35px;
+	text-align: center;
+	border-right: 1px solid #000000;
+	cursor: pointer;
+}
+
+/* Убираем бордер у последнего в radiogroup, чтобы не было двойного бордера */
+
+.label:hover {
+	background-color: #ffedab;
+}
+
+.item[data-checked='true'] .label {
+	background: var(--gold, #ffc802);
+}
+
+.item:last-child .label {
+	border: none;
+}
+
+.item[data-checked='true'] .label:hover {
+	background: var(--gold, #ffc802);
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	row-gap: 4px;
+}
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\radio-group\RadioGroup.stories.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+import type { Meta, StoryObj } from '@storybook/react';
+
+import { RadioGroup } from './RadioGroup';
+import { useState } from 'react';
+
+const meta: Meta<typeof RadioGroup> = {
+	component: RadioGroup,
+};
+
+export default meta;
+type Story = StoryObj<typeof RadioGroup>;
+
+const RadioGroupWithState = () => {
+	const options = [
+		{ title: '1 опция', value: '1 опция', className: '' },
+		{ title: '2 опция', value: '2 опция', className: '' },
+		{ title: '3 опция', value: '3 опция', className: '' },
+		{ title: '4 опция', value: '4 опция', className: '' },
+	];
+	const [selected, setSelected] = useState(options[0]);
+
+	return (
+		<>
+			<RadioGroup
+				selected={selected}
+				name='radio'
+				onChange={setSelected}
+				options={options}
+				title='Название радиогруппы'
+			/>
+		</>
+	);
+};
+
+export const RadioGroupStory: Story = {
+	render: () => <RadioGroupWithState />,
+};
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\radio-group\RadioGroup.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+import { OptionType } from 'src/constants/articleProps';
+import { Text } from 'src/ui/text';
+import { Option } from './Option';
+
+import styles from './RadioGroup.module.scss';
+
+type RadioGroupProps = {
+	name: string;
+	options: OptionType[];
+	selected: OptionType;
+	onChange?: (value: OptionType) => void;
+	title: string;
+};
+
+export const RadioGroup = (props: RadioGroupProps) => {
+	const { name, options, selected, onChange, title } = props;
+
+	const handleChange = (option: OptionType) => onChange?.(option);
+
+	return (
+		<div className={styles.container}>
+			{title && (
+				<>
+					<Text weight={800} size={12} uppercase>
+						{title}
+					</Text>
+				</>
+			)}
+			<div className={styles.group}>
+				{options.map((option) => (
+					<Option
+						key={option.value}
+						groupName={name}
+						value={option.value}
+						title={option.title}
+						selected={selected}
+						onChange={() => handleChange(option)}
+						option={option}
+					/>
+				))}
+			</div>
+		</div>
+	);
+};
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\radio-group\hooks\useEnterSubmit.ts
+────────────────────────────────────────────────────────────────────────────────
+
+import { useEffect, useRef } from 'react';
+import { OptionType } from 'src/constants/articleProps';
+
+type UseEnterSubmit = {
+	onChange?: (option: OptionType) => void;
+	option: OptionType;
+};
+
+export const useEnterSubmit = ({ onChange, option }: UseEnterSubmit) => {
+	const optionRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		const optionHtml = optionRef.current;
+
+		if (!optionHtml) return;
+
+		const handleEnterKeyDown = (event: KeyboardEvent) => {
+			if (document.activeElement === optionHtml && event.key === 'Enter') {
+				onChange?.(option);
+			}
+		};
+
+		optionHtml.addEventListener('keydown', handleEnterKeyDown);
+
+		// не забываем удалять листенеры, при размонтировании компонента
+		return () => {
+			optionHtml.removeEventListener('keydown', handleEnterKeyDown);
+		};
+	}, [onChange, option]);
+};
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\select\index.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+export { Select } from './Select';
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\select\Option.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+import { useRef } from 'react';
+import type { MouseEventHandler } from 'react';
+import clsx from 'clsx';
+import { OptionType } from 'src/constants/articleProps';
+import { Text } from 'src/ui/text';
+import { isFontFamilyClass } from './helpers/isFontFamilyClass';
+import { useEnterOptionSubmit } from './hooks/useEnterOptionSubmit';
+
+import styles from './Select.module.scss';
+
+type OptionProps = {
+	option: OptionType;
+	onClick: (value: OptionType['value']) => void;
+};
+
+export const Option = (props: OptionProps) => {
+	const {
+		option: { value, title, optionClassName, className },
+		onClick,
+	} = props;
+	const optionRef = useRef<HTMLLIElement>(null);
+
+	const handleClick =
+		(clickedValue: OptionType['value']): MouseEventHandler<HTMLLIElement> =>
+		() => {
+			onClick(clickedValue);
+		};
+
+	useEnterOptionSubmit({
+		optionRef,
+		value,
+		onClick,
+	});
+
+	return (
+		<li
+			className={clsx(styles.option, styles[optionClassName || ''])}
+			value={value}
+			onClick={handleClick(value)}
+			tabIndex={0}
+			data-testid={`select-option-${value}`}
+			ref={optionRef}>
+			<Text family={isFontFamilyClass(className) ? className : undefined}>
+				{title}
+			</Text>
+		</li>
+	);
+};
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\select\Select.module.scss
+────────────────────────────────────────────────────────────────────────────────
+
+.selectWrapper {
+	position: relative;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	row-gap: 4px;
+}
+
+.arrow {
+	position: absolute;
+	top: 50%;
+	right: 6px;
+	width: 24px;
+	margin-top: -12px;
+	transition: transform 0.2s ease-in-out, margin-top 0.2s ease-in-out;
+}
+
+.placeholder {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	box-sizing: border-box;
+	width: 100%;
+	height: 50px;
+	padding: 15px 17px;
+	background: rgb(255 255 255);
+	outline: 1px solid #000000;
+	cursor: pointer;
+}
+
+.placeholder[data-selected='true'] {
+	color: rgb(0 0 0);
+}
+
+.selectWrapper[data-is-active='true'] .arrow {
+	margin-top: -14px;
+	transform: rotate(180deg);
+}
+
+.selectWrapper[data-is-active='true'] .placeholder {
+	outline: 3px solid #000000;
+}
+
+.selectWrapper:not([data-is-active='true'])
+	.placeholder:not([data-status='invalid']):hover {
+	outline: 1px solid #ffc802;
+}
+
+.select {
+	position: absolute;
+	z-index: 10;
+	display: grid;
+	box-sizing: border-box;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	background-color: rgb(255 255 255 / 100%);
+	border-top: none;
+	outline: 3px solid #000000;
+}
+
+.option {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	height: 30px;
+	padding: 15px 17px;
+	background-color: rgb(255 255 255 / 100%);
+	border: 1px;
+	cursor: pointer;
+}
+
+.option[aria-selected='true'] {
+	background-color: rgb(0 0 0 / 5%);
+}
+
+.option:hover {
+	background: var(--grey, #c4c4c4);
+}
+
+@mixin option-color-before {
+	content: '';
+	width: 35px;
+	height: 35px;
+	margin-right: 10px;
+}
+
+.option-black::before {
+	@include option-color-before;
+	background-color: #000000;
+}
+
+@mixin option-color-after {
+	content: '';
+	position: absolute;
+	left: 26px;
+	width: 17px;
+	height: 17px;
+	border-radius: 100%;
+}
+
+.option-black[data-selected='true']::after {
+	@include option-color-after;
+	background-color: #ffffff;
+}
+
+.option-white::before {
+	@include option-color-before;
+	box-sizing: border-box;
+	background-color: #ffffff;
+	border: 1px solid #000000;
+}
+
+.option-white[data-selected='true']::after {
+	@include option-color-after;
+	background-color: #000000;
+}
+
+.option-gray::before {
+	@include option-color-before;
+	background-color: #c4c4c4;
+}
+
+.option-gray[data-selected='true']::after {
+	@include option-color-after;
+	background-color: #ffffff;
+}
+
+.option-pink::before {
+	@include option-color-before;
+	background-color: #feafe8;
+}
+
+.option-pink[data-selected='true']::after {
+	@include option-color-after;
+	background-color: #ffffff;
+}
+
+.option-fuchsia::before {
+	@include option-color-before;
+	background-color: #fd24af;
+}
+
+.option-fuchsia[data-selected='true']::after {
+	@include option-color-after;
+	background-color: #ffffff;
+}
+
+.option-yellow::before {
+	@include option-color-before;
+	background-color: #ffc802;
+}
+
+.option-yellow[data-selected='true']::after {
+	@include option-color-after;
+	background-color: #ffffff;
+}
+
+.option-green::before {
+	@include option-color-before;
+	background-color: #80d994;
+}
+
+.option-green[data-selected='true']::after {
+	@include option-color-after;
+	background-color: #ffffff;
+}
+
+.option-blue::before {
+	@include option-color-before;
+	background-color: #6fc1fd;
+}
+
+.option-blue[data-selected='true']::after {
+	@include option-color-after;
+	background-color: #ffffff;
+}
+
+.option-purple::before {
+	@include option-color-before;
+	background-color: #5f0dee;
+}
+
+.option-purple[data-selected='true']::after {
+	@include option-color-after;
+	background-color: #ffffff;
+}
+
+@mixin option-width-before {
+	content: '';
+	width: 25px;
+	height: 25px;
+	margin-right: 10px;
+}
+
+.option-wide::before {
+	@include option-width-before;
+	background-image: url('../../images/wide.svg');
+}
+
+.option-narrow::before {
+	@include option-width-before;
+	background-image: url('../../images/narrow.svg');
+}
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\select\Select.stories.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+import type { Meta, StoryObj } from '@storybook/react';
+
+import { Select } from './Select';
+import { useState } from 'react';
+
+const meta: Meta<typeof Select> = {
+	component: Select,
+};
+
+export default meta;
+type Story = StoryObj<typeof Select>;
+
+const SelectWithState = () => {
+	const options = [
+		{ title: '1 опция', value: '1 опция', className: '' },
+		{ title: '2 опция', value: '2 опция', className: '' },
+		{ title: '3 опция', value: '3 опция', className: '' },
+		{ title: '4 опция', value: '4 опция', className: '' },
+	];
+	const [selected, setSelected] = useState(options[0]);
+
+	return (
+		<>
+			<Select
+				selected={selected}
+				onChange={setSelected}
+				options={options}
+				title='Название выпадающего списка'
+			/>
+		</>
+	);
+};
+
+export const SelectStory: Story = {
+	render: () => <SelectWithState />,
+};
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\select\Select.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+import { useState, useRef } from 'react';
+import type { MouseEventHandler } from 'react';
+import clsx from 'clsx';
+import { OptionType } from 'src/constants/articleProps';
+import { Text } from 'src/ui/text';
+import arrowDown from 'src/images/arrow-down.svg';
+import { Option } from './Option';
+import { isFontFamilyClass } from './helpers/isFontFamilyClass';
+import { useEnterSubmit } from './hooks/useEnterSubmit';
+import { useOutsideClickClose } from './hooks/useOutsideClickClose';
+
+import styles from './Select.module.scss';
+
+type SelectProps = {
+	selected: OptionType | null;
+	options: OptionType[];
+	placeholder?: string;
+	onChange?: (selected: OptionType) => void;
+	onClose?: () => void;
+	title?: string;
+};
+
+export const Select = (props: SelectProps) => {
+	const { options, placeholder, selected, onChange, onClose, title } = props;
+	const [isOpen, setIsOpen] = useState<boolean>(false);
+	const rootRef = useRef<HTMLDivElement>(null);
+	const placeholderRef = useRef<HTMLDivElement>(null);
+	const optionClassName = selected?.optionClassName ?? '';
+
+	useOutsideClickClose({
+		isOpen,
+		rootRef,
+		onClose,
+		onChange: setIsOpen,
+	});
+
+	useEnterSubmit({
+		placeholderRef,
+		onChange: setIsOpen,
+	});
+
+	const handleOptionClick = (option: OptionType) => {
+		setIsOpen(false);
+		onChange?.(option);
+	};
+	const handlePlaceHolderClick: MouseEventHandler<HTMLDivElement> = () => {
+		setIsOpen((isOpen) => !isOpen);
+	};
+
+	return (
+		<div className={styles.container}>
+			{title && (
+				<>
+					<Text size={12} weight={800} uppercase>
+						{title}
+					</Text>
+				</>
+			)}
+			<div
+				className={styles.selectWrapper}
+				ref={rootRef}
+				data-is-active={isOpen}
+				data-testid='selectWrapper'>
+				<img src={arrowDown} alt='иконка стрелочки' className={styles.arrow} />
+				<div
+					className={clsx(
+						styles.placeholder,
+						(styles as Record<string, string>)[optionClassName]
+					)}
+					data-status={status}
+					data-selected={!!selected?.value}
+					onClick={handlePlaceHolderClick}
+					role='button'
+					tabIndex={0}
+					ref={placeholderRef}>
+					<Text
+						family={
+							isFontFamilyClass(selected?.className)
+								? selected?.className
+								: undefined
+						}>
+						{selected?.title || placeholder}
+					</Text>
+				</div>
+				{isOpen && (
+					<ul className={styles.select} data-testid='selectDropdown'>
+						{options
+							.filter((option) => selected?.value !== option.value)
+							.map((option) => (
+								<Option
+									key={option.value}
+									option={option}
+									onClick={() => handleOptionClick(option)}
+								/>
+							))}
+					</ul>
+				)}
+			</div>
+		</div>
+	);
+};
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\select\helpers\isFontFamilyClass.ts
+────────────────────────────────────────────────────────────────────────────────
+
+import {
+	FontFamiliesClasses,
+	fontFamilyClasses,
+} from 'src/constants/articleProps';
+
+/** Так выглядят typeGuards в ts, он позволяет нам определить является ли переменная определенным типом.
+ * Подробнее о них можно почитать тут - https://www.typescriptlang.org/docs/handbook/advanced-types.html */
+export function isFontFamilyClass(
+	family?: string | FontFamiliesClasses
+): family is FontFamiliesClasses {
+	return fontFamilyClasses.includes(family as FontFamiliesClasses);
+}
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\select\hooks\useEnterOptionSubmit.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+import { useEffect } from 'react';
+import { OptionType } from 'src/constants/articleProps';
+
+type UseEnterOptionSubmit = {
+	onClick: (value: OptionType['value']) => void;
+	value: OptionType['value'];
+	optionRef: React.RefObject<HTMLLIElement>;
+};
+
+export const useEnterOptionSubmit = ({
+	onClick,
+	value,
+	optionRef,
+}: UseEnterOptionSubmit) => {
+	useEffect(() => {
+		const option = optionRef.current;
+		if (!option) return;
+		const handleEnterKeyDown = (event: KeyboardEvent) => {
+			if (document.activeElement === option && event.key === 'Enter') {
+				onClick(value);
+			}
+		};
+
+		option.addEventListener('keydown', handleEnterKeyDown);
+		return () => {
+			option.removeEventListener('keydown', handleEnterKeyDown);
+		};
+	}, [value, onClick, optionRef]);
+};
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\select\hooks\useEnterSubmit.ts
+────────────────────────────────────────────────────────────────────────────────
+
+import { useEffect } from 'react';
+
+type UseEnterSubmit = {
+	onChange: React.Dispatch<React.SetStateAction<boolean>>;
+	placeholderRef: React.RefObject<HTMLDivElement>;
+};
+
+export const useEnterSubmit = ({
+	placeholderRef,
+	onChange,
+}: UseEnterSubmit) => {
+	useEffect(() => {
+		const placeholderEl = placeholderRef.current;
+		if (!placeholderEl) return;
+
+		const handleEnterKeyDown = (event: KeyboardEvent) => {
+			if (event.key === 'Enter') {
+				onChange((isOpen: boolean) => !isOpen);
+			}
+		};
+		placeholderEl.addEventListener('keydown', handleEnterKeyDown);
+
+		return () => {
+			placeholderEl.removeEventListener('keydown', handleEnterKeyDown);
+		};
+	}, []);
+};
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\select\hooks\useOutsideClickClose.ts
+────────────────────────────────────────────────────────────────────────────────
+
+import { useEffect } from 'react';
+
+type UseOutsideClickClose = {
+	isOpen: boolean;
+	onChange: (newValue: boolean) => void;
+	onClose?: () => void;
+	rootRef: React.RefObject<HTMLDivElement>;
+};
+
+export const useOutsideClickClose = ({
+	isOpen,
+	rootRef,
+	onClose,
+	onChange,
+}: UseOutsideClickClose) => {
+	useEffect(() => {
+		const handleClick = (event: MouseEvent) => {
+			const { target } = event;
+			if (target instanceof Node && !rootRef.current?.contains(target)) {
+				isOpen && onClose?.();
+				onChange?.(false);
+			}
+		};
+
+		if (!isOpen) {
+			return;
+		}
+
+		window.addEventListener('mousedown', handleClick);
+
+		return () => {
+			window.removeEventListener('mousedown', handleClick);
+		};
+	}, [onClose, onChange, isOpen]);
+};
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\separator\index.module.scss
+────────────────────────────────────────────────────────────────────────────────
+
+.separator {
+	width: 100%;
+	height: 1px;
+	background: #000000;
+}
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\separator\index.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+export { Separator } from './Separator';
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\separator\Separator.stories.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+import type { Meta, StoryObj } from '@storybook/react';
+
+import { Separator } from './Separator';
+
+const meta: Meta<typeof Separator> = {
+	component: Separator,
+};
+
+export default meta;
+type Story = StoryObj<typeof Separator>;
+
+export const SelectStory: Story = {
+	render: () => {
+		return <Separator />;
+	},
+};
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\separator\Separator.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+import styles from './index.module.scss';
+
+export const Separator = () => {
+	return <div className={styles.separator}></div>;
+};
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\story-decorator\index.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+export { StoryDecorator } from './StoryDecorator';
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\story-decorator\StoryDecorator.module.scss
+────────────────────────────────────────────────────────────────────────────────
+
+@import '../../styles/index';
+
+.storybookContainer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 50px;
+}
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\story-decorator\StoryDecorator.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+import { Decorator } from '@storybook/react';
+import styles from './StoryDecorator.module.scss';
+
+export const StoryDecorator: Decorator = (Story) => (
+	<div className={styles.storybookContainer}>
+		<Story />
+	</div>
+);
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\text\index.module.scss
+────────────────────────────────────────────────────────────────────────────────
+
+@mixin typography($size: 18, $weight: 400, $family: 'Open Sans') {
+	color: #000000;
+	font-weight: $weight;
+	font-size: $size;
+	font-family: $family;
+	line-height: normal;
+	letter-spacing: 0;
+}
+
+.text {
+	@include typography(18, 400, 'Open Sans');
+}
+
+.open-sans {
+	font-family: 'Open Sans', sans-serif;
+}
+
+.ubuntu {
+	font-family: 'Ubuntu', sans-serif;
+}
+
+.cormorant-garamond {
+	font-family: 'Cormorant Garamond', sans-serif;
+}
+
+.days-one {
+	font-family: 'Days One', sans-serif;
+}
+
+.merriweather {
+	font-family: 'Merriweather', sans-serif;
+}
+
+.left {
+	text-align: left;
+}
+
+.center {
+	text-align: center;
+}
+
+.uppercase {
+	text-transform: uppercase;
+}
+
+.size12 {
+	font-size: 12px;
+}
+
+.size18 {
+	font-size: 18px;
+}
+
+.size22 {
+	font-size: 22px;
+}
+
+.size25 {
+	font-size: 25px;
+}
+
+.size31 {
+	font-size: 31px;
+}
+
+.size38 {
+	font-size: 38px;
+}
+
+.size45 {
+	font-size: 45px;
+}
+
+.weight400 {
+	font-weight: 400;
+}
+
+.weight800 {
+	font-weight: 800;
+}
+
+.normal {
+	font-style: normal;
+}
+
+.italic {
+	font-style: italic;
+}
+
+// для динамических типографий, используем константы, которые будут меняться
+
+.dynamic {
+	color: var(--font-color, #000000);
+	font-size: var(--font-size, 18px);
+	font-family: var(--font-family, 'Open Sans');
+}
+
+// для заголовка и подзаголовка рамер шрифта одинаковый, меняется только цвет и семейство шрифтов
+
+.dynamicLite {
+	color: var(--font-color, #000000);
+	font-family: var(--font-family, 'Open Sans');
+}
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\text\index.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+export { Text } from './Text';
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\text\Text.stories.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+import type { Meta, StoryObj } from '@storybook/react';
+
+import { Text } from './Text';
+
+const meta: Meta<typeof Text> = {
+	component: Text,
+};
+
+export default meta;
+type Story = StoryObj<typeof Text>;
+
+export const SelectStory: Story = {
+	argTypes: {
+		as: {
+			options: ['h1', 'h2', 'div', 'span'],
+			control: { type: 'select' },
+		},
+		dynamic: {
+			control: { type: 'boolean' },
+		},
+		size: {
+			options: [12, 18, 22, 25, 31, 38, 45],
+			control: { type: 'select' },
+		},
+		weight: {
+			options: [400, 800],
+			control: { type: 'select' },
+		},
+		fontStyle: {
+			options: ['italic', 'normal'],
+			control: { type: 'select' },
+		},
+		uppercase: {
+			control: { type: 'boolean' },
+		},
+		align: {
+			options: ['center', 'left'],
+			control: { type: 'select' },
+		},
+		family: {
+			options: [
+				'open-sans',
+				'ubuntu',
+				'cormorant-garamond',
+				'days-one',
+				'merriweather',
+			],
+			control: { type: 'select' },
+		},
+	},
+	render: (args) => {
+		return (
+			<Text {...args}>
+				Lorem ipsum, dolor sit amet consectetur adipisicing elit. Animi, nulla.
+				Itaque laudantium quas repudiandae delectus voluptates fuga veritatis.
+				Necessitatibus omnis sequi repudiandae, porro est possimus ullam
+				inventore dolores rem molestiae.
+			</Text>
+		);
+	},
+};
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: src\ui\text\Text.tsx
+────────────────────────────────────────────────────────────────────────────────
+
+import { ElementType, ReactNode } from 'react';
+import { clsx } from 'clsx';
+import { FontFamiliesClasses } from 'src/constants/articleProps';
+
+import styles from './index.module.scss';
+
+type TextProps = {
+	/** Сам текст для вывода */
+	children: ReactNode;
+	/** Тэг которым отрендерить текст */
+	as?: ElementType;
+	/** Булевая пропса, должен ли текст меняться в зависимости от конфига */
+	dynamic?: boolean;
+	/** Размер шрифта */
+	size?: 12 | 18 | 22 | 25 | 31 | 38 | 45;
+	/** Вес шрифта */
+	weight?: 400 | 800;
+	/** Стиль шрифта */
+	fontStyle?: 'italic' | 'normal';
+	/** Булевая пропса, отвечающая должен ли текст быть в верхнем регистре */
+	uppercase?: boolean;
+	/** Выравнивание текста */
+	align?: 'center' | 'left';
+	/** font-family текста */
+	family?: FontFamiliesClasses;
+	/** Булевая пропса, делает динамическим только семью шрифтов и цвет */
+	dynamicLite?: boolean;
+};
+
+export const Text = ({
+	children,
+	as: Tag = 'div',
+	size = 18,
+	dynamic = false,
+	weight = 400,
+	fontStyle = 'normal',
+	uppercase = false,
+	align = 'left',
+	family = 'open-sans',
+	dynamicLite = false,
+}: TextProps) => {
+	const className = clsx(
+		styles.text,
+		styles[`size${size}`],
+		{ [styles.dynamic]: dynamic },
+		styles[`weight${weight}`],
+		styles[`${fontStyle}`],
+		{ [styles.uppercase]: uppercase },
+		styles[`${align}`],
+		styles[`${family}`],
+		{ [styles.dynamicLite]: dynamicLite }
+	);
+	return <Tag className={className}>{children}</Tag>;
+};
+
+
+
+================================================================================
+ПАПКА: public/
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: public\index.html
+────────────────────────────────────────────────────────────────────────────────
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
+
+
+
+================================================================================
+ПАПКА: webpack/
+================================================================================
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: webpack\webpack.common.js
+────────────────────────────────────────────────────────────────────────────────
+
+const HTMLWebpackPlugins = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const path = require('path'); //для того чтобы превратить отнсительный путь в абсолютный мы будем использовать пакет path
+const webpack = require('webpack');
+
+const production = process.env.NODE_ENV === 'production';
+
+module.exports = {
+	entry: path.resolve(__dirname, '..', './src/index.tsx'), //точка входа в наше приложение содержит абсолютный путь к index.ts
+	output: {
+		path: path.resolve(__dirname, '..', './dist'), //путь куда будет собираться наш проект
+		filename: production
+			? 'static/scripts/[name].[contenthash].js'
+			: 'static/scripts/[name].js', // имя нашего бандла
+		publicPath: '/',
+	},
+	//Нужно помочь вебпаку научится работать с jsx и tsx файлами для этого используют ts loader
+	module: {
+		rules: [
+			{
+				test: /\.[tj]sx?$/, //содержит регулярное выражение, которое содержит информацию какие файлы должны обрабатываться этим loader'ом
+				use: [
+					{
+						loader: 'ts-loader',
+					},
+				], // для того чтобы ts-loader корректно отработал нам нужен tsconfig его можно создать вручную, а можно создать автоматически
+				/** чтобы проиницилизовать его автоматически можно установить пакет typesctipt глобально или использовать npx выполнив команду npx tsc --init
+				После создания конфига нужно включить "allowJs": true, чтобы работать не только c typescript, также меняем "jsx": "react" чтобы мы могли работать с react компонентами и включаем карту ресурсов "sourceMap": true, пока на этом все вернемся в этот конфиг позже*/
+				exclude: /node_modules/,
+			},
+			{
+				test: /\.(png|jpg|gif|webp)$/,
+				type: 'asset/resource',
+				generator: {
+					filename: 'static/images/[hash][ext][query]',
+				},
+			},
+			{
+				test: /\.(woff(2)?|eot|ttf|otf)$/,
+				type: 'asset/resource',
+				generator: {
+					filename: 'static/fonts/[hash][ext][query]',
+				},
+			},
+			{
+				test: /\.svg$/i,
+				issuer: /\.[jt]sx?$/,
+				use: ['@svgr/webpack', 'url-loader'],
+			},
+			{
+				test: /\.(sa|sc|c)ss$/,
+				use: [
+					production ? MiniCssExtractPlugin.loader : 'style-loader',
+					{
+						loader: 'css-loader',
+						options: {
+							modules: {
+								mode: 'local',
+								localIdentName: '[name]__[local]__[hash:base64:5]',
+								auto: /\.module\.\w+$/i,
+							},
+							importLoaders: 2, //Значение 2 говорит о том, что некоторые трансформации PostCSS нужно применить до css-loader.
+						},
+					},
+					'postcss-loader',
+					{
+						loader: 'sass-loader',
+						options: {
+							sourceMap: true,
+						},
+					},
+				],
+			},
+		],
+	},
+	resolve: {
+		extensions: ['.js', '.jsx', '.tsx', '.ts', '.json'], //указываем файлы с которыми будет работать webpack
+		alias: {
+			fonts: path.resolve(__dirname, '..', './src/fonts'),
+			src: path.resolve(__dirname, '..', './src'),
+			components: path.resolve(__dirname, '..', './src/components'),
+		},
+	},
+	plugins: [
+		new HTMLWebpackPlugins({
+			template: path.resolve(__dirname, '..', './public/index.html'),
+		}),
+		new CleanWebpackPlugin(),
+		new MiniCssExtractPlugin({
+			filename: production
+				? 'static/styles/[name].[contenthash].css'
+				: 'static/styles/[name].css',
+		}),
+		new webpack.EnvironmentPlugin({
+			NODE_ENV: 'development', // значение по умолчанию 'development' если переменная process.env.NODE_ENV не передана
+		}),
+	],
+};
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: webpack\webpack.config.js
+────────────────────────────────────────────────────────────────────────────────
+
+const { merge } = require('webpack-merge');
+const commonConfig = require('./webpack.common.js');
+
+module.exports = (envVars) => {
+	const { env } = envVars;
+	const envConfig = require(`./webpack.${env}.js`);
+	const config = merge(commonConfig, envConfig);
+	return config;
+};
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: webpack\webpack.dev.js
+────────────────────────────────────────────────────────────────────────────────
+
+const path = require('path'); //для того чтобы превратить отнсительный путь в абсолютный мы будем использовать пакет path
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+
+module.exports = {
+	mode: 'development',
+	devtool: 'eval-source-map',
+	devServer: {
+		historyApiFallback: true,
+		static: path.resolve(__dirname, './dist'), // путь, куда "смотрит" режим разработчика
+		// compress: true, // это ускорит загрузку в режиме разработки
+		port: 8080, // порт, чтобы открывать сайт по адресу localhost:8080, но можно поменять порт
+		open: true, // сайт будет открываться сам при запуске npm run dev
+		hot: true,
+	},
+	plugins: [new ReactRefreshWebpackPlugin()],
+};
+
+
+
+────────────────────────────────────────────────────────────────────────────────
+ФАЙЛ: webpack\webpack.prod.js
+────────────────────────────────────────────────────────────────────────────────
+
+module.exports = {
+	mode: 'production',
+	devtool: false,
+};
+
+
+
+================================================================================
+СТАТИСТИКА
+================================================================================
+Всего файлов: 58
+Всего символов: 66941
+Размер файла: ~65 KB
