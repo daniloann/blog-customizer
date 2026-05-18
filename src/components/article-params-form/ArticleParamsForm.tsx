@@ -1,4 +1,3 @@
-// src/components/article-params-form/ArticleParamsForm.tsx
 import { useState, useRef, useEffect, FormEvent } from 'react';
 import { ArrowButton } from 'src/ui/arrow-button';
 import { Button } from 'src/ui/button';
@@ -6,7 +5,6 @@ import { Select } from 'src/ui/select';
 import { RadioGroup } from 'src/ui/radio-group';
 import { Separator } from 'src/ui/separator';
 import { Text } from 'src/ui/text';
-
 import {
 	fontFamilyOptions,
 	fontColors,
@@ -15,131 +13,121 @@ import {
 	fontSizeOptions,
 	defaultArticleState,
 	ArticleStateType,
+	OptionType,
 } from 'src/constants/articleProps';
-
 import styles from './ArticleParamsForm.module.scss';
 import clsx from 'clsx';
 
 type ArticleParamsFormProps = {
-	onApply?: (settings: ArticleStateType) => void; // Сделаем опциональным для проверки
+	onApply: (settings: ArticleStateType) => void; // Убрали опциональность
 };
 
 export const ArticleParamsForm = ({ onApply }: ArticleParamsFormProps) => {
-	const [isOpen, setIsOpen] = useState(false);
-	const [settings, setSettings] =
+	const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+	const [formSettings, setFormSettings] =
 		useState<ArticleStateType>(defaultArticleState);
 	const sidebarRef = useRef<HTMLDivElement>(null);
 
+	// Универсальный обработчик для всех полей
+	const handleFieldChange =
+		(field: keyof ArticleStateType) => (option: OptionType) => {
+			setFormSettings((prev) => ({ ...prev, [field]: option }));
+		};
+
 	useEffect(() => {
+		if (!isSidebarOpen) {
+			return;
+		}
+
 		const handleClickOutside = (event: MouseEvent) => {
 			if (
-				isOpen &&
 				sidebarRef.current &&
 				!sidebarRef.current.contains(event.target as Node)
 			) {
-				setIsOpen(false);
+				setIsSidebarOpen(false);
 			}
 		};
 
-		if (isOpen) {
-			document.addEventListener('mousedown', handleClickOutside);
-		}
-
+		document.addEventListener('mousedown', handleClickOutside);
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside);
 		};
-	}, [isOpen]);
+	}, [isSidebarOpen]);
 
 	const handleSubmit = (event: FormEvent) => {
 		event.preventDefault();
-		if (onApply) {
-			onApply(settings);
-		}
-		setIsOpen(false);
+		onApply(formSettings);
+		setIsSidebarOpen(false);
 	};
 
 	const handleReset = () => {
-		const resetSettings = { ...defaultArticleState };
-		setSettings(resetSettings);
-		if (onApply) {
-			onApply(resetSettings);
-		}
+		setFormSettings(defaultArticleState);
+		onApply(defaultArticleState);
 	};
 
 	const toggleSidebar = () => {
-		console.log('Toggle sidebar clicked, isOpen:', isOpen);
-		setIsOpen(!isOpen);
+		setIsSidebarOpen(!isSidebarOpen);
 	};
 
 	return (
 		<>
-			<ArrowButton isOpen={isOpen} onClick={toggleSidebar} />
+			<ArrowButton isOpen={isSidebarOpen} onClick={toggleSidebar} />
 			<aside
 				className={clsx(styles.container, {
-					[styles.container_open]: isOpen,
+					[styles.container_open]: isSidebarOpen,
 				})}
 				ref={sidebarRef}>
 				<form className={styles.form} onSubmit={handleSubmit}>
 					<Text as='h2' size={31} weight={800} uppercase>
-						Настройки
+						ЗАДАЙТЕ ПАРАМЕТРЫ
 					</Text>
+
+					<Select
+						title='ШРИФТ'
+						options={fontFamilyOptions}
+						selected={formSettings.fontFamilyOption}
+						onChange={handleFieldChange('fontFamilyOption')}
+					/>
+
+					<RadioGroup
+						title='РАЗМЕР ШРИФТА'
+						name='fontSize'
+						options={fontSizeOptions}
+						selected={formSettings.fontSizeOption}
+						onChange={handleFieldChange('fontSizeOption')}
+					/>
+
+					<Select
+						title='ЦВЕТ ШРИФТА'
+						options={fontColors}
+						selected={formSettings.fontColor}
+						onChange={handleFieldChange('fontColor')}
+					/>
 
 					<Separator />
 
 					<Select
-						title='Шрифт'
-						options={fontFamilyOptions}
-						selected={settings.fontFamilyOption}
-						onChange={(option) =>
-							setSettings({ ...settings, fontFamilyOption: option })
-						}
-					/>
-
-					<RadioGroup
-						title='Размер шрифта'
-						name='fontSize'
-						options={fontSizeOptions}
-						selected={settings.fontSizeOption}
-						onChange={(option) =>
-							setSettings({ ...settings, fontSizeOption: option })
-						}
-					/>
-
-					<Select
-						title='Цвет шрифта'
-						options={fontColors}
-						selected={settings.fontColor}
-						onChange={(option) =>
-							setSettings({ ...settings, fontColor: option })
-						}
-					/>
-
-					<Select
-						title='Цвет фона'
+						title='ЦВЕТ ФОНА'
 						options={backgroundColors}
-						selected={settings.backgroundColor}
-						onChange={(option) =>
-							setSettings({ ...settings, backgroundColor: option })
-						}
+						selected={formSettings.backgroundColor}
+						onChange={handleFieldChange('backgroundColor')}
 					/>
 
 					<Select
-						title='Ширина контента'
+						title='ШИРИНА КОНТЕНТА'
 						options={contentWidthArr}
-						selected={settings.contentWidth}
-						onChange={(option) =>
-							setSettings({ ...settings, contentWidth: option })
-						}
+						selected={formSettings.contentWidth}
+						onChange={handleFieldChange('contentWidth')}
 					/>
 
 					<div className={styles.bottomContainer}>
 						<Button
-							title='Сбросить'
+							title='СБРОСИТЬ'
 							htmlType='reset'
 							type='clear'
 							onClick={handleReset}
 						/>
-						<Button title='Применить' htmlType='submit' type='apply' />
+						<Button title='ПРИМЕНИТЬ' htmlType='submit' type='apply' />
 					</div>
 				</form>
 			</aside>
